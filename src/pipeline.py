@@ -126,6 +126,16 @@ def compose_report(llm: LLM, sections: List[Tuple[str, str]], target_words: int)
     return llm.chat(messages, max_tokens=3500)
 
 
+def polish_report(llm: LLM, report: str) -> str:
+    """Refine the full report for smoother transitions and clarity."""
+    messages = [
+        {"role": "system", "content": prompts.SYSTEM_PROMPT},
+        {"role": "user", "content": prompts.POLISH_PROMPT},
+        {"role": "user", "content": report},
+    ]
+    return llm.chat(messages, max_tokens=3500)
+
+
 def enforce_wordcount(llm: LLM, report: str, target_words: int) -> str:
     messages = [
         {"role": "system", "content": prompts.SYSTEM_PROMPT},
@@ -168,7 +178,8 @@ def generate_report_v2(
         sections_out.append((sec.get("title", "Section"), text2))
 
     composed = compose_report(llm, sections_out, intent["word_limit"])
-    final = enforce_wordcount(llm, composed, intent["word_limit"])
+    polished = polish_report(llm, composed)
+    final = enforce_wordcount(llm, polished, intent["word_limit"])
     return final
 
 
