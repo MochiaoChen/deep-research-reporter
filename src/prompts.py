@@ -72,6 +72,12 @@ TARGET_WORDS={target}
 """
 
 
+POLISH_PROMPT = """Polish the full draft for smoother transitions, flow, and clarity.
+Fix minor grammar issues and ensure the report reads as a cohesive whole.
+Return ONLY the refined report text.
+"""
+
+
 FACTCHECK_PROMPT = """You are a meticulous fact checker. Given a claim and
 supporting evidence text, decide whether the evidence supports, refutes or is
 insufficient for the claim. Respond with a JSON object {"verdict":
